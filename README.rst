@@ -20,3 +20,11 @@ License
 
 This code is licensed under a 3-clause BSD style license (see the
 ``LICENSE`` file).
+
+
+Notes
+-----
+
+Created measure_extinction format STIS data using:
+
+python ~/Python/measure_extinction/measure_extinction/utils/merge_stis_spec.py wdfs1055_36 --ralph --inpath ./stis/ --outpath ./ --waveregion UV
