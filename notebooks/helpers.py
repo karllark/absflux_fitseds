@@ -25,8 +25,11 @@ def get_full_params(params):
     return full_params
 
 
-def plot_data_model(reddened_star, modinfo, params, velocity, prange=None):
+def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, starname, velocity, 
+                    params_unc=None, prange=None):
 
+    params = get_full_params(params_in)
+    
     # intrinsic sed
     modsed = modinfo.stellar_sed(params[0:3], velocity=velocity)
 
@@ -69,51 +72,72 @@ def plot_data_model(reddened_star, modinfo, params, velocity, prange=None):
         # ax.plot(reddened_star.data[cspec].waves,
         #        weights[cspec], 'k-')
 
+        gvals = reddened_star.data[cspec].fluxes > 0.0
         ax.plot(
-            reddened_star.data[cspec].waves,
-            reddened_star.data[cspec].fluxes,
+            reddened_star.data[cspec].waves[gvals],
+            reddened_star.data[cspec].fluxes[gvals] * np.power(reddened_star.data[cspec].waves[gvals], 4.0),
             "k" + ptype,
             label="data",
+            alpha=0.7,
         )
 
         # print(reddened_star.data[cspec].waves)
         # print(modinfo.waves[cspec])
 
         ax.plot(
-            modinfo.waves[cspec], modsed[cspec] * norm_data / norm_model, "b" + ptype, label=cspec
+            modinfo.waves[cspec][gvals], 
+            modsed[cspec][gvals] * (norm_data / norm_model) * np.power(modinfo.waves[cspec][gvals], 4.0), 
+            "b" + ptype, 
+            label=cspec,
+            alpha=0.5,
         )
         ax.plot(
-            modinfo.waves[cspec],
-            ext_modsed[cspec] * norm_data / norm_model,
+            modinfo.waves[cspec][gvals],
+            ext_modsed[cspec][gvals] * (norm_data / norm_model) * np.power(modinfo.waves[cspec][gvals], 4.0),
             "r" + ptype,
             label=cspec,
+            alpha=0.5,
         )
         modspec = hi_ext_modsed[cspec] * norm_data / norm_model
         ax.plot(
-            modinfo.waves[cspec],
-            modspec,
+            modinfo.waves[cspec][gvals],
+            modspec[gvals] * np.power(modinfo.waves[cspec][gvals], 4.0),
             "g" + ptype,
             label=cspec,
+            alpha=0.5,
         )
         
-        diff = (reddened_star.data[cspec].fluxes.value - modspec) / modspec
+        diff = 100.0 * (reddened_star.data[cspec].fluxes.value - modspec) / modspec
         axes[1].plot(reddened_star.data[cspec].waves, diff, "k" + ptype)
 
         
     # finish configuring the plot
     if prange is None:
-        ax.set_ylim(8e4 * norm_data / norm_model, 2e10 * norm_data / norm_model)
+        ax.set_ylim(4e5 * norm_data / norm_model, 1e7 * norm_data / norm_model)
     else:
         ax.set_ylim(prange)
     ax.set_yscale("log")
     ax.set_xscale("log")
     axes[1].set_xlabel(r"$\lambda$ [$\mu m$]", fontsize=1.3 * fontsize)
-    ax.set_ylabel(r"$F(\lambda)$ [$ergs\ cm^{-2}\ s\ \AA$]", fontsize=1.3 * fontsize)
+    ax.set_ylabel(r"$\lambda^4 F(\lambda)$ [RJ units]", fontsize=1.3 * fontsize)
+    axes[1].set_ylabel("residuals [%]", fontsize=1.0 * fontsize)
     ax.tick_params("both", length=10, width=2, which="major")
     ax.tick_params("both", length=5, width=1, which="minor")
-    axes[1].set_ylim(-0.1, 0.1)
+    axes[1].set_ylim(-10., 10.)
     axes[1].plot([0.1, 2.5], [0.0, 0.0], "k:")
 
+    for k, (pname, pval) in enumerate(zip(paramnames, params_in)):
+        if params_unc is not None:
+            ptxt = fr"{pname} = ${pval:.2f} \pm {params_unc[k]:.2f}$"
+        else:
+            ptxt = f"{pname} = {pval:.2f}"
+        ax.text(0.7, 0.5 - k*0.04, ptxt,
+             horizontalalignment='left',
+             verticalalignment='center',
+             transform = ax.transAxes)
+        
+    ax.text(0.1, 0.9, starname, transform = ax.transAxes)
+    
     # ax.legend()
 
     # use the whitespace better
