@@ -25,7 +25,7 @@ def get_full_params(params):
     return full_params
 
 
-def plot_data_model(reddened_star, modinfo, params, velocity):
+def plot_data_model(reddened_star, modinfo, params, velocity, prange=None):
 
     # intrinsic sed
     modsed = modinfo.stellar_sed(params[0:3], velocity=velocity)
@@ -34,7 +34,12 @@ def plot_data_model(reddened_star, modinfo, params, velocity):
     ext_modsed = modinfo.dust_extinguished_sed(params[3:10], modsed)
 
     # hi_abs sed
-    hi_ext_modsed = modinfo.hi_abs_sed(params[10:12], [velocity, 0.0], ext_modsed)
+    hi_ext_modsed = modinfo.hi_abs_sed(
+        params[10:12], [velocity, 0.0], ext_modsed
+    )
+
+    # create a StarData object for the best fit SED
+    #modsed_stardata = modinfo.SED_to_StarData(modsed)
 
     norm_model = np.average(hi_ext_modsed["BAND"])
     norm_data = np.average(reddened_star.data["BAND"].fluxes).value
@@ -51,9 +56,7 @@ def plot_data_model(reddened_star, modinfo, params, velocity):
     plt.rc("ytick.minor", width=2)
 
     # setup the plot
-    fig, axes = plt.subplots(
-        nrows=2, figsize=(13, 10), gridspec_kw={"height_ratios": [3, 1]}, sharex=True
-    )
+    fig, axes = plt.subplots(nrows=2, figsize=(13, 10), gridspec_kw={'height_ratios': [3, 1]}, sharex=True)
 
     # plot the bands and all spectra for this star
     ax = axes[0]
@@ -77,10 +80,7 @@ def plot_data_model(reddened_star, modinfo, params, velocity):
         # print(modinfo.waves[cspec])
 
         ax.plot(
-            modinfo.waves[cspec],
-            modsed[cspec] * norm_data / norm_model,
-            "b" + ptype,
-            label=cspec,
+            modinfo.waves[cspec], modsed[cspec] * norm_data / norm_model, "b" + ptype, label=cspec
         )
         ax.plot(
             modinfo.waves[cspec],
@@ -95,12 +95,16 @@ def plot_data_model(reddened_star, modinfo, params, velocity):
             "g" + ptype,
             label=cspec,
         )
-
+        
         diff = (reddened_star.data[cspec].fluxes.value - modspec) / modspec
-        axes[1].plot(reddened_star.data[cspec].waves, diff, "k-")
+        axes[1].plot(reddened_star.data[cspec].waves, diff, "k" + ptype)
 
+        
     # finish configuring the plot
-    ax.set_ylim(8e4 * norm_data / norm_model, 2e10 * norm_data / norm_model)
+    if prange is None:
+        ax.set_ylim(8e4 * norm_data / norm_model, 2e10 * norm_data / norm_model)
+    else:
+        ax.set_ylim(prange)
     ax.set_yscale("log")
     ax.set_xscale("log")
     axes[1].set_xlabel(r"$\lambda$ [$\mu m$]", fontsize=1.3 * fontsize)
