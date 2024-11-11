@@ -134,9 +134,10 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
         ax.text(0.7, 0.5 - k*0.04, ptxt,
              horizontalalignment='left',
              verticalalignment='center',
-             transform = ax.transAxes)
+             transform = ax.transAxes,
+             fontsize=fontsize)
         
-    ax.text(0.1, 0.9, starname, transform = ax.transAxes)
+    ax.text(0.1, 0.9, starname, transform = ax.transAxes, fontsize=fontsize)
     
     # ax.legend()
 
