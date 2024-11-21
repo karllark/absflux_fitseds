@@ -113,7 +113,7 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
         
     # finish configuring the plot
     if prange is None:
-        ax.set_ylim(4e5 * norm_data / norm_model, 1e7 * norm_data / norm_model)
+        ax.set_ylim(1e5 * norm_data / norm_model, 3e7 * norm_data / norm_model)
     else:
         ax.set_ylim(prange)
     ax.set_yscale("log")
