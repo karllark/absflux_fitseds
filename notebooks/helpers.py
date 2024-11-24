@@ -66,8 +66,10 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
     for cspec in modinfo.fluxes.keys():
         if cspec == "BAND":
             ptype = "o"
+            rcolor = "g"
         else:
             ptype = "-"
+            rcolor = "k"
 
         # ax.plot(reddened_star.data[cspec].waves,
         #        weights[cspec], 'k-')
@@ -108,7 +110,7 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
         )
         
         diff = 100.0 * (reddened_star.data[cspec].fluxes.value - modspec) / modspec
-        axes[1].plot(reddened_star.data[cspec].waves, diff, "k" + ptype)
+        axes[1].plot(reddened_star.data[cspec].waves, diff, rcolor + ptype)
 
         
     # finish configuring the plot
