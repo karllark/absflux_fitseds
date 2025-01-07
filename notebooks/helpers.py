@@ -41,11 +41,16 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
         params[10:12], [velocity, 0.0], ext_modsed
     )
 
-    # create a StarData object for the best fit SED
-    #modsed_stardata = modinfo.SED_to_StarData(modsed)
-
-    norm_model = np.average(hi_ext_modsed["BAND"])
-    norm_data = np.average(reddened_star.data["BAND"].fluxes).value
+    norm_mod = []
+    norm_dat = []
+    norm_npts = []
+    for cspec in reddened_star.data.keys():
+        gvals = (weights[cspec] > 0) & (np.isfinite(hi_ext_modsed[cspec]))
+        norm_npts.append(np.sum(gvals))
+        norm_mod.append(np.average(hi_ext_modsed[cspec][gvals]))
+        norm_dat.append(np.average(reddened_star.data[cspec].fluxes[gvals].value))
+    norm_model = np.average(norm_mod, weights=norm_npts)
+    norm_data = np.average(norm_dat, weights=norm_npts)
 
     # plotting setup for easier to read plots
     fontsize = 18
@@ -63,16 +68,13 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
 
     # plot the bands and all spectra for this star
     ax = axes[0]
-    for cspec in modinfo.fluxes.keys():
+    for cspec in reddened_star.data.keys():
         if cspec == "BAND":
             ptype = "o"
             rcolor = "g"
         else:
             ptype = "-"
             rcolor = "k"
-
-        # ax.plot(reddened_star.data[cspec].waves,
-        #        weights[cspec], 'k-')
 
         gvals = reddened_star.data[cspec].fluxes > 0.0
         ax.plot(
@@ -82,10 +84,6 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
             label="data",
             alpha=0.7,
         )
-
-        # print(reddened_star.data[cspec].waves)
-        # print(modinfo.waves[cspec])
-
         ax.plot(
             modinfo.waves[cspec][gvals], 
             modsed[cspec][gvals] * (norm_data / norm_model) * np.power(modinfo.waves[cspec][gvals], 4.0), 
@@ -110,7 +108,11 @@ def plot_data_model(reddened_star, weights, modinfo, params_in, paramnames, star
         )
         
         diff = 100.0 * (reddened_star.data[cspec].fluxes.value - modspec) / modspec
-        axes[1].plot(reddened_star.data[cspec].waves, diff, rcolor + ptype)
+        if cspec is not "BAND":
+            calpha = 0.5
+        else:
+            calpha = 0.75
+        axes[1].plot(reddened_star.data[cspec].waves, diff, rcolor + ptype, alpha=calpha)
 
         
     # finish configuring the plot
