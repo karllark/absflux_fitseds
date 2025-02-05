@@ -1,0 +1,1 @@
+mefit_star --path ./data/faintwds/ wdfs0248_33 --mcmc --mcmc_nsteps 100 --modtype whitedwarfs --modpath ~/Python/extstar_data/Models/
