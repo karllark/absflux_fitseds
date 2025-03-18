@@ -1,0 +1,3 @@
+# data file for observations of WDFS1514_00
+STIS = wdfs1514_00_stis_UV.fits
+STIS_Opt = wdfs1514_00_stis_Opt.fits

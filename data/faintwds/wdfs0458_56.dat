@@ -1,0 +1,11 @@
+# data file for observations of WDFS0458_56
+WFC3_F275W = 17.000 +/- 0.002  ABmag
+WFC3_F336W = 17.332 +/- 0.003  ABmag
+WFC3_F475W = 17.743 +/- 0.003  ABmag
+WFC3_F625W = 18.209 +/- 0.002  ABmag
+WFC3_F775W = 18.595 +/- 0.002  ABmag
+WFC3_F160W = 19.998 +/- 0.005  ABmag
+STIS = wdfs0458_56_stis_UV.fits
+Teff = 30100.0
+logg = 7.79
+Z = 1.0

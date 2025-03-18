@@ -1,0 +1,11 @@
+# data file for observations of WDFS1535_77
+WFC3_F275W = 15.576 +/- 0.002  ABmag
+WFC3_F336W = 15.950 +/- 0.002  ABmag
+WFC3_F475W = 16.542 +/- 0.002  ABmag
+WFC3_F625W = 17.042 +/- 0.002  ABmag
+WFC3_F775W = 17.451 +/- 0.001  ABmag
+WFC3_F160W = 18.889 +/- 0.004  ABmag
+STIS = wdfs1535_77_stis_UV.fits
+Teff = 50500.0
+logg = 9.10
+Z = 1.0

@@ -1,0 +1,9 @@
+# data file for observations of WDFS1514_00
+#WFC3_F275W = 15.087 +/- 0.002  ABmag
+#WFC3_F336W = 15.372 +/- 0.002  ABmag
+3WFC3_F475W = 15.698 +/- 0.002  ABmag
+#WFC3_F625W = 16.112 +/- 0.002  ABmag
+#WFC3_F775W = 16.465 +/- 0.001  ABmag
+WFC3_F160W = 17.786 +/- 0.004  ABmag
+STIS = wdfs1514_00_stis_UV.fits
+STIS_Opt = wdfs1514_00_stis_Opt.fits
