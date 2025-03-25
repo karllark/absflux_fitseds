@@ -45,7 +45,7 @@ def fit_model_parser():
         action="store_true",
     )
     parser.add_argument(
-        "--Av_init", help="initial A(V) for fitting", default=1.0, type=float
+        "--Av_init", help="initial A(V) for fitting", default=0.2, type=float
     )
     parser.add_argument("--mcmc", help="run EMCEE MCMC fitting", action="store_true")
     parser.add_argument(
@@ -74,6 +74,9 @@ def main():
     # get data
     fstarname = f"{args.starname}.dat"
     reddened_star = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
+
+    if "BAND" not in reddened_star.data.keys():
+        rel_band = 0.55 * u.micron
 
     # remove low S/N STIS data - affected by systematics
     sn_cut = 1.5
@@ -127,10 +130,23 @@ def main():
 
     if "Teff" in reddened_star.model_params.keys():
         memod.logTeff.value = np.log10(float(reddened_star.model_params["Teff"]))
-        memod.logTeff.fixed = True
+        if "Teff_unc" in reddened_star.model_params.keys():
+            memod.logTeff.prior = (
+                memod.logTeff.value,
+                float(reddened_star.model_params["Teff_unc"])
+                / (float(reddened_star.model_params["Teff"]) * np.log(10.0)),
+            )
+        else:
+            memod.logTeff.fixed = True
     if "logg" in reddened_star.model_params.keys():
         memod.logg.value = float(reddened_star.model_params["logg"])
-        memod.logg.fixed = True
+        if "logg_unc" in reddened_star.model_params.keys():
+            memod.logg.prior = (
+                memod.logg.value,
+                float(reddened_star.model_params["logg_unc"]),
+            )
+        else:
+            memod.logg.fixed = True
     if "Z" in reddened_star.model_params.keys():
         memod.logZ.value = np.log10(float(reddened_star.model_params["Z"]))
         memod.logZ.fixed = True
@@ -154,21 +170,19 @@ def main():
         memod.windalpha.fixed = False
 
     memod.Av.value = args.Av_init
+    memod.logHI_MW.value = np.log10(1.61e20 * memod.Av.value)
+
+    # set velocities to non-zero to help fitting
+    memod.velocity.value = 10.0
+    memod.vel_MW.value = -10.0
 
     # for M31
     memod.logZ.fixed = True
     # memod.velocity.fixed = True
-    # memod.logTeff.fixed = False
+    memod.logTeff.fixed = False
     # memod.logg.fixed = False
     # memod.velocity.value = -100.0
     memod.velocity.fixed = False
-    # memod.C2.fixed = True
-    # memod.B3.fixed = True
-    # memod.C4.fixed = True
-    # memod.xo.fixed = True
-    # memod.gamma.fixed = True
-    # memod.vel_MW.fixed = True
-    memod.logHI_MW.value = 17.0
 
     memod.set_initial_norm(reddened_star, modinfo)
 
@@ -199,6 +213,12 @@ def main():
 
     if args.mcmc:
         print("starting sampling")
+
+        # set the A(V) to >0 to allow mcmc to do a better job of fitting
+        if fitmod.Av.value < 1e-3:
+            print("A(V) = 0, setting to 0.1 for MCMC start")
+            fitmod.Av.value = 0.1
+
         # using an MCMC sampler to define nD probability function
         # use best fit result as the starting point
         fitmod2, flat_samples, sampler = fitmod.fit_sampler(
@@ -239,11 +259,8 @@ def main():
     # get the reddened star data again to have all the possible spectra
     reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=rel_band)
-    # col_info = {"av": fitmod.Av.value, "rv": fitmod.Rv.value}
     extdata.columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}
-    extdata.save(
-        f"{outname.replace("figs", "exts")}_ext.fits"
-    )  # , column_info=col_info)
+    extdata.save(f"{outname.replace("figs", "exts")}_ext.fits")
 
     if args.showfit:
         fitmod.plot(reddened_star, modinfo, resid_range=resid_range, lyaplot=lyaplot)

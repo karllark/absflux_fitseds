@@ -21,7 +21,6 @@ License
 This code is licensed under a 3-clause BSD style license (see the
 ``LICENSE`` file).
 
-
 Notes
 -----
 

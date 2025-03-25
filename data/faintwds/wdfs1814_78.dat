@@ -7,5 +7,7 @@ WFC3_F775W = 17.387 +/- 0.001  ABmag
 WFC3_F160W = 18.785 +/- 0.002  ABmag
 STIS = wdfs1814_78_stis_UV.fits
 Teff = 31000.0
+Teff_unc = 130.0
 logg = 7.80
+logg_unc = 0.014
 Z = 1.0

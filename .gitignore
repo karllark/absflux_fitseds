@@ -1,3 +1,5 @@
 *.png
 *.pdf
 *.log
+*.fits
+*.p
