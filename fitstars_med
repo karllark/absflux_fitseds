@@ -1,0 +1,6 @@
+
+for CSTAR in wd0148_467
+
+do
+    python utils/fit_model.py $CSTAR --picmodel --path="./data/mediumwds/" --Av_init=0.05 &> logs/$CSTAR.log &
+done
