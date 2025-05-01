@@ -2,5 +2,5 @@
 for CSTAR in wd0148_467 wd0227_050 wd0809_177 wd1105_048 wd1105_340 wd1327_083 wd1713_695 wd1911_536 wd1919_145 wd2039_682 wd2117_539 wd2126_734 wd2149_021
 
 do
-    nice -n 19 python utils/fit_model.py $CSTAR --picmodel --path="./data/mediumwds/" --Av_init=0.05 &> logs/$CSTAR.log &
+    nice -n 19 python utils/fit_model.py $CSTAR --picmodel --path="./data/mediumwds/" --Av_init=0.05 --mcmc --mcmc_nsteps=50000 &> logs/$CSTAR.log &
 done
