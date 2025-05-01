@@ -1,0 +1,8 @@
+# data file for observations of WD1911_536
+STIS = wd1911_536_stis_UV.fits
+STIS_Opt = wd1911_536_stis_Opt.fits
+Teff = 17500.0
+Teff_unc = 400.0
+logg = 8.30
+logg_unc = 0.040
+Z = 1.0

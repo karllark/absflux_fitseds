@@ -1,0 +1,8 @@
+# data file for observations of WD2039_682
+STIS = wd2039_682_stis_UV.fits
+STIS_Opt = wd2039_682_stis_Opt.fits
+Teff = 17000.0
+Teff_unc = 400.0
+logg = 8.50
+logg_unc = 0.040
+Z = 1.0

@@ -1,0 +1,8 @@
+# data file for observations of WD1105_048
+STIS = wd1105_048_stis_UV.fits
+STIS_Opt = wd1105_048_stis_Opt.fits
+Teff = 14000.0
+Teff_unc = 400.0
+logg = 8.10
+logg_unc = 0.040
+Z = 1.0

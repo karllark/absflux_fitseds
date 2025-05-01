@@ -92,6 +92,7 @@ def main():
     else:
         band_names = []
     data_names = list(reddened_star.data.keys())
+    band_names = None
 
     # model data
     start_time = time.time()

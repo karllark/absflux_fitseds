@@ -1,0 +1,8 @@
+# data file for observations of WD2149_021
+STIS = wd2149_021_stis_UV.fits
+STIS_Opt = wd2149_021_stis_Opt.fits
+Teff = 17700.0
+Teff_unc = 400.0
+logg = 8.00
+logg_unc = 0.040
+Z = 1.0

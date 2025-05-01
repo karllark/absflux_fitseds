@@ -1,0 +1,8 @@
+# data file for observations of WD1919_145
+STIS = wd1919_145_stis_UV.fits
+STIS_Opt = wd1919_145_stis_Opt.fits
+Teff = 15400.0
+Teff_unc = 400.0
+logg = 8.17
+logg_unc = 0.040
+Z = 1.0
