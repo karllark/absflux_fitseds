@@ -127,7 +127,7 @@ def main():
 
     # setup the model
     # memod = MEModel(modinfo=modinfo, obsdata=reddened_star)  # use to activate logf fitting
-    memod = MEModel(modinfo=modinfo)
+    memod = MEModel(modinfo=modinfo, obsdata=reddened_star)
 
     if "Teff" in reddened_star.model_params.keys():
         memod.logTeff.value = np.log10(float(reddened_star.model_params["Teff"]))
