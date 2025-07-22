@@ -79,13 +79,13 @@ def main():
         rel_band = 0.55 * u.micron
 
     # remove low S/N STIS data - affected by systematics
-    sn_cut = 1.5
-    snr = reddened_star.data["STIS"].fluxes / reddened_star.data["STIS"].uncs
-    bvals = np.logical_and(
-        snr < sn_cut, reddened_star.data["STIS"].waves > 0.17 * u.micron
-    )
-    reddened_star.data["STIS"].npts[bvals] = 0
-    reddened_star.data["STIS"].fluxes[bvals] = 0
+    # sn_cut = 1.5
+    # snr = reddened_star.data["STIS"].fluxes / reddened_star.data["STIS"].uncs
+    # bvals = np.logical_and(
+    #     snr < sn_cut, reddened_star.data["STIS"].waves > 0.17 * u.micron
+    # )
+    # reddened_star.data["STIS"].npts[bvals] = 0
+    # reddened_star.data["STIS"].fluxes[bvals] = 0
 
     if "BAND" in reddened_star.data.keys():
         band_names = reddened_star.data["BAND"].get_band_names()
