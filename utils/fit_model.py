@@ -187,6 +187,9 @@ def main():
 
     memod.set_initial_norm(reddened_star, modinfo)
 
+    # dictonary for fit parameter tables
+    fit_params = {}
+
     print("initial parameters")
     memod.pprint_parameters()
 
@@ -206,6 +209,9 @@ def main():
 
     print("best parameters")
     fitmod.pprint_parameters()
+    fit_params["MIN"] = fitmod.save_parameters()
+
+    dust_columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}
 
     fitmod.plot(reddened_star, modinfo, resid_range=resid_range, lyaplot=lyaplot)
     plt.savefig(f"{outname}_minimizer.pdf")
@@ -233,6 +239,13 @@ def main():
 
         print("p50 parameters")
         fitmod2.pprint_parameters()
+        fit_params["MCMC"] = fitmod2.save_parameters()
+
+        dust_columns = {
+            "AV": (fitmod2.Av.value, fitmod2.Av.unc),
+            "RV": (fitmod2.Rv.value, fitmod2.Rv.unc),
+        }
+
 
         fitmod2.plot(reddened_star, modinfo, resid_range=resid_range, lyaplot=lyaplot)
         plt.savefig(f"{outname}_mcmc.pdf")
@@ -253,6 +266,8 @@ def main():
 
     # create a stardata object with the best intrinsic (no extinction) model
     modsed = fitmod.stellar_sed(modinfo)
+    if "BAND" in reddened_star.data.keys():
+        modinfo.band_names = reddened_star.data["BAND"].get_band_names()
     modsed_stardata = modinfo.SED_to_StarData(modsed)
 
     # create an extincion curve and save it
@@ -260,7 +275,7 @@ def main():
     # get the reddened star data again to have all the possible spectra
     reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=rel_band)
-    extdata.columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}
+    extdata.columns = dust_columns
     extdata.save(f"{outname.replace("figs", "exts")}_ext.fits")
 
     if args.showfit:
