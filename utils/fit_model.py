@@ -276,7 +276,7 @@ def main():
     reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=rel_band)
     extdata.columns = dust_columns
-    extdata.save(f"{outname.replace("figs", "exts")}_ext.fits")
+    extdata.save(f"{outname.replace("figs", "exts")}_ext.fits", fit_params=fit_params)
 
     if args.showfit:
         fitmod.plot(reddened_star, modinfo, resid_range=resid_range, lyaplot=lyaplot)
