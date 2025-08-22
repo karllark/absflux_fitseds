@@ -28,6 +28,17 @@ def main():
     parser.add_argument("--pdf", help="save figure as a pdf file", action="store_true")
     args = parser.parse_args()
 
+    # plotting setup for easier to read plots
+    fontsize = 16
+    font = {"size": fontsize}
+    plt.rc("font", **font)
+    plt.rc("lines", linewidth=1)
+    plt.rc("axes", linewidth=2)
+    plt.rc("xtick.major", width=2)
+    plt.rc("xtick.minor", width=2)
+    plt.rc("ytick.major", width=2)
+    plt.rc("ytick.minor", width=2)
+
     # base filename
     outname = f"figs/{args.starname}_mefit"
 
@@ -169,6 +180,8 @@ def main():
         cax.set_ylim(0.5, 1.2)
 
     axes[2].set_xlabel(r"$\lambda$ [$\mu$m]")
+
+    axes[0].set_title((reddened_star.file).replace(".dat", ""), fontsize=fontsize)
 
     save_str = "_mefit_mcmc_norm"
 
