@@ -2,6 +2,7 @@ import argparse
 import pickle
 import emcee
 import matplotlib.pyplot as plt
+from matplotlib.ticker import ScalarFormatter
 import numpy as np
 
 from measure_extinction.model import MEModel
@@ -29,7 +30,7 @@ def main():
     args = parser.parse_args()
 
     # plotting setup for easier to read plots
-    fontsize = 16
+    fontsize = 12
     font = {"size": fontsize}
     plt.rc("font", **font)
     plt.rc("lines", linewidth=1)
@@ -48,7 +49,9 @@ def main():
 
     # get the modeling info
     modinfo = pickle.load(open(args.picmodname, "rb"))
-    modinfo_cont = pickle.load(open(args.picmodname.replace("modinfo", "cont_modinfo"), "rb"))
+    modinfo_cont = pickle.load(
+        open(args.picmodname.replace("modinfo", "cont_modinfo"), "rb")
+    )
 
     # setup the ME model
     memod = MEModel(obsdata=reddened_star, modinfo=modinfo)
@@ -119,7 +122,9 @@ def main():
     memod.pprint_parameters()
 
     # plot
-    fig, axes = plt.subplots(nrows=3, figsize=(8, 8))
+    fig, axes = plt.subplots(
+        nrows=3, figsize=(8, 8), gridspec_kw={"height_ratios": [2, 2, 1]}
+    )
 
     # normalized the data by the continuum model
     modsed = memod.stellar_sed(modinfo)
@@ -130,58 +135,141 @@ def main():
     ext_modsed_cont = memod_cont.dust_extinguished_sed(modinfo_cont, modsed_cont)
     hi_ext_modsed_cont = memod_cont.hi_abs_sed(modinfo_cont, ext_modsed_cont)
 
-    for cspec in reddened_star.data.keys():
-
-        if cspec == "BAND":
-            ptype = "o"
-            rcolor = "k"
-        else:
-            ptype = "-"
-            rcolor = "k"
+    for cspec in list(reddened_star.data.keys()) + ["MODEL_FULL_LOWRES"]:
 
         if cspec == "BAND":
             cwaves = reddened_star.data[cspec].waves
+            ptype = "o"
+            rcolor = "g"
+            calpha = 0.75
+            linewidth = 10.0
+            fcolor = "none"
+            markersize = 10.0
         else:
             cwaves = modinfo.waves[cspec]
+            ptype = "-"
+            rcolor = "k"
+            calpha = 0.5
+            linewidth = 2.0
+            fcolor = None
+            markersize = None
 
-        reddened_star.data[cspec].fluxes /= (memod_cont.norm.value * hi_ext_modsed_cont[cspec])
-        reddened_star.data[cspec].uncs /= (memod_cont.norm.value * hi_ext_modsed_cont[cspec])
+        nvals = np.full(len(cwaves), 1.0)
+        # plot the residuals
+        if cspec != "MODEL_FULL_LOWRES":
+            mcolor = "r"
+            gvals = hi_ext_modsed[cspec] > 0.0
+            modspec = hi_ext_modsed[cspec][gvals] * memod.norm.value
+            diff = (
+                100.0
+                * (reddened_star.data[cspec].fluxes.value[gvals] - modspec)
+                / modspec
+            )
+            if cspec != "BAND":
+                uncs = None
+            else:
+                uncs = 100.0 * reddened_star.data[cspec].uncs.value[gvals] / modspec
+
+            nvals = np.full(len(diff), 1.0)
+            nvals[(memod.weights[cspec])[gvals] == 0.0] = np.nan
+
+            axes[2].errorbar(
+                cwaves[gvals],
+                diff,
+                yerr=uncs,
+                fmt=rcolor + ptype,
+                alpha=0.2,
+                markersize=markersize,
+                mfc=fcolor,
+            )
+            axes[2].errorbar(
+                cwaves[gvals] * nvals,
+                diff * nvals,
+                yerr=uncs,
+                fmt=rcolor + ptype,
+                alpha=calpha,
+                markersize=markersize,
+                mfc=fcolor,
+            )
+
+            # compute the ratio to the extinguished model continuum
+            reddened_star.data[cspec].fluxes /= (
+                memod_cont.norm.value * hi_ext_modsed_cont[cspec]
+            )
+            reddened_star.data[cspec].uncs /= (
+                memod_cont.norm.value * hi_ext_modsed_cont[cspec]
+            )
+
+            gvals = reddened_star.data[cspec].fluxes > 0.0
+            # nan models where no data or excluded
+            nvals = np.full(len(cwaves), 1.0)
+            nvals[memod_cont.weights[cspec] == 0.0] = np.nan
+        else:
+            mcolor = "c"
+
         hi_ext_modsed[cspec] /= hi_ext_modsed_cont[cspec]
 
-        # nan models where no data or excluded
-        nvals = np.full(len(cwaves), 1.0)
-        nvals[memod_cont.weights[cspec] == 0.0] = np.nan
-        gvals = reddened_star.data[cspec].fluxes > 0.0
-
-        for cax in axes:
+        for cax in axes[0:2]:
             cax.plot(
-                cwaves, hi_ext_modsed[cspec] * nvals, "r" + ptype
+                cwaves,
+                hi_ext_modsed[cspec] * nvals,
+                mcolor + ptype,
+                linewidth=linewidth,
+                markersize=markersize,
+                mfc=fcolor,
+                label=f"Model: {cspec}",
             )
             cax.plot(
-                cwaves, hi_ext_modsed[cspec], "r" + ptype, alpha=0.3,
+                cwaves,
+                hi_ext_modsed[cspec],
+                mcolor + ptype,
+                alpha=0.2,
+                linewidth=linewidth,
+                markersize=markersize,
+                mfc=fcolor,
             )
 
             # data
-            cax.errorbar(
-                reddened_star.data[cspec].waves[gvals],
-                reddened_star.data[cspec].fluxes[gvals],
-                yerr=reddened_star.data[cspec].uncs[gvals],
-                fmt="b" + ptype,
-                alpha=0.5,
-            )
+            if cspec != "MODEL_FULL_LOWRES":
+                cax.errorbar(
+                    reddened_star.data[cspec].waves[gvals],
+                    reddened_star.data[cspec].fluxes[gvals],
+                    #yerr=reddened_star.data[cspec].uncs[gvals],
+                    fmt=rcolor + ptype,
+                    alpha=calpha,
+                    mfc=fcolor,
+                    markersize=markersize,
+                    label=f"Data: {cspec}"
+                )
 
-    axes[0].set_xlim(0.1, 0.3)
-    axes[1].set_xlim(0.3, 1.0)
-    axes[2].set_xlim(1.0, 2.0)
+    axes[0].set_xlim(0.11, 0.38)
+    axes[1].set_xlim(0.35, 2.0)
+    axes[1].set_xscale("log")
+    axes[2].set_xlim(0.11, 2.0)
+    axes[2].set_xscale("log")
 
-    for cax in axes:
+    for cax in axes[0:2]:
         cax.axhline(1.0, ls="--", color="k", alpha=0.5)
         cax.set_ylabel(r"$F/F_{\mathrm{modcont}}$")
         cax.set_ylim(0.5, 1.2)
 
+    axes[2].set_ylim(-10.0, 10.0)
+    axes[2].axhline(0.0, ls="--", color="k", alpha=0.5)
+    axes[2].set_ylabel("residuals [%]")
+
     axes[2].set_xlabel(r"$\lambda$ [$\mu$m]")
 
+    for cax in axes[1:3]:
+        cax.xaxis.set_major_formatter(ScalarFormatter())
+        cax.xaxis.set_minor_formatter(ScalarFormatter())
+        cax.tick_params(axis="x", which="minor", labelsize=fontsize)
+        cax.tick_params(axis="x", which="minor", labelsize=fontsize)
+    axes[1].set_xticks([0.4, 0.6, 0.8, 1.0, 2.0], minor=True)
+    axes[2].set_xticks([0.11, 0.2, 0.3, 0.4, 0.6, 0.8, 1.0, 2.0], minor=True)
+
     axes[0].set_title((reddened_star.file).replace(".dat", ""), fontsize=fontsize)
+
+    axes[1].legend(fontsize=0.7*fontsize, ncol=2)
 
     save_str = "_mefit_mcmc_norm"
 
