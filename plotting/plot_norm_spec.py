@@ -50,7 +50,7 @@ def main():
     # get the modeling info
     modinfo = pickle.load(open(args.picmodname, "rb"))
     modinfo_cont = pickle.load(
-        open(args.picmodname.replace("modinfo", "cont_modinfo"), "rb")
+        open(args.picmodname.replace("_modinfo", "cont_modinfo"), "rb")
     )
 
     # setup the ME model
