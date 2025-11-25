@@ -37,8 +37,9 @@ Old style merged STIS spectra
 Fits
 ----
 
-Fitting is done with `utils/fit_model.py` code.  Example command is `utils/fit_model.py wdfs1514_00 --Av_init=0.1`.  Add `--picmodel`
-to use a previous pickled model.
+Before fitting, `utils\pic_cont.py` needs to be run to pixel the regular and continuum only WD models.
+
+Fitting is done with `utils/fit_model.py` code.  Example command is `utils/fit_model.py wdfs1514_00 --picmodel --Av_init=0.1`.
 
 Bulk fitting is done using the `fitstars` (wdfs stars) and `fits_stars_med` (wd stars) bash scripts.  These start multiple 
 simultaneous fits with log files in the `logs` subdir.

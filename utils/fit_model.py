@@ -104,7 +104,7 @@ def main():
         modstr = "tlusty_"
 
     if args.picmodel:
-        modinfo = pickle.load(open(f"{modstr}_modinfo.p", "rb"))
+        modinfo = pickle.load(open(f"{modstr}modinfo.p", "rb"))
     else:
         tlusty_models_fullpath = glob.glob(f"{args.modpath}/{modstr}*.dat")
         tlusty_models = [
@@ -122,7 +122,7 @@ def main():
             band_names=band_names,
             spectra_names=data_names,
         )
-        pickle.dump(modinfo, open(f"{modstr}_modinfo.p", "wb"))
+        pickle.dump(modinfo, open(f"{modstr}modinfo.p", "wb"))
     print("finished reading model files")
     print("--- %s seconds ---" % (time.time() - start_time))
 

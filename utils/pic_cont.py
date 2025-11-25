@@ -43,6 +43,6 @@ if __name__ == "__main__":
             band_names=None,
             spectra_names=["BAND", "STIS", "STIS_Opt"],
         )
-        pickle.dump(modinfo, open(f"{modstr}{mtype}_modinfo.p", "wb"))
+        pickle.dump(modinfo, open(f"{modstr}{mtype}modinfo.p", "wb"))
         print("finished reading model files")
         print("--- %s seconds ---" % (time.time() - start_time))
