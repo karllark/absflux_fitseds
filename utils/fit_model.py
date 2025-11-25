@@ -91,8 +91,16 @@ def main():
         band_names = reddened_star.data["BAND"].get_band_names()
     else:
         band_names = []
-    #data_names = list(reddened_star.data.keys())
-    data_names = ['BAND', 'STIS_G140L', 'STIS_G230L', 'STIS_G430L', 'STIS_G750L', 'WFC3_G102', 'WFC3_G141']
+    # data_names = list(reddened_star.data.keys())
+    data_names = [
+        "BAND",
+        "STIS_G140L",
+        "STIS_G230L",
+        "STIS_G430L",
+        "STIS_G750L",
+        "WFC3_G102",
+        "WFC3_G141",
+    ]
     band_names = None
 
     # model data
@@ -246,7 +254,6 @@ def main():
             "AV": (fitmod2.Av.value, fitmod2.Av.unc),
             "RV": (fitmod2.Rv.value, fitmod2.Rv.unc),
         }
-
 
         fitmod2.plot(reddened_star, modinfo, resid_range=resid_range, lyaplot=lyaplot)
         plt.savefig(f"{outname}_mcmc.pdf")

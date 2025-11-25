@@ -1,4 +1,5 @@
 import os
+import argparse
 
 from measure_extinction.utils.helpers import read_bohlin
 from measure_extinction.merge_obsspec import (
@@ -9,15 +10,26 @@ from measure_extinction.merge_obsspec import (
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--medwds", help="process WD stars (mediumwds)", action="store_true")
+    args = parser.parse_args()
+
 
     # fmt: off
-    names = ["wdfs0122_30", "wdfs0248_33", "wdfs0458_56", "wdfs0639_57", "wdfs0956_38", "wdfs1055_36",
-             "wdfs1110_17", "wdfs1206_27", "wdfs1214_45", "wdfs1302_10", "wdfs1434_28", "wdfs1514_00",
-             "wdfs1535_77", "wdfs1557_55", "wdfs1814_78", "wdfs1837_70", "wdfs1930_52", "wdfs2317_29",
-             "wdfs2351_37"]
+    if args.medwds:
+        names = ["wd0148_467", "wd0227_050", "wd0809_177", "wd1105_048", "wd1105_340", "wd1327_083",
+                 "wd1713_695", "wd1911_536", "wd1919_145", "wd2039_682", "wd2117_539", "wd2126_734",
+                 "wd2149_021",
+                 "wd1202_232", "wd1544_377", "wd2341_322"]   # missing WD0352_096
+        path = "data/mediumwds/"
+    else:
+        names = ["wdfs0122_30", "wdfs0248_33", "wdfs0458_56", "wdfs0639_57", "wdfs0956_38", "wdfs1055_36",
+                "wdfs1110_17", "wdfs1206_27", "wdfs1214_45", "wdfs1302_10", "wdfs1434_28", "wdfs1514_00",
+                "wdfs1535_77", "wdfs1557_55", "wdfs1814_78", "wdfs1837_70", "wdfs1930_52", "wdfs2317_29",
+                "wdfs2351_37"]
+        path = "data/faintwds/"
     # fmt: on
 
-    path = "data/faintwds/"
     for cname in names:
         print(f"working on {cname}")
 

@@ -1,6 +1,10 @@
 # data file for observations of WD2039_682
-STIS = wd2039_682_stis_UV.fits
-STIS_Opt = wd2039_682_stis_Opt.fits
+STIS_G140L = wd2039_682_stis_g140l.fits
+STIS_G230L = wd2039_682_stis_g230l.fits
+STIS_G430L = wd2039_682_stis_g430l.fits
+STIS_G750L = wd2039_682_stis_g750l.fits
+WFC3_G102 = wd2039_682_wfc3_g102.fits
+WFC3_G141 = wd2039_682_wfc3_g141.fits
 Teff = 17000.0
 Teff_unc = 400.0
 logg = 8.50

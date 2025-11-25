@@ -1,6 +1,10 @@
 # data file for observations of WD1713_695
-STIS = wd1713_695_stis_UV.fits
-STIS_Opt = wd1713_695_stis_Opt.fits
+STIS_G140L = wd1713_695_stis_g140l.fits
+STIS_G230L = wd1713_695_stis_g230l.fits
+STIS_G430L = wd1713_695_stis_g430l.fits
+STIS_G750L = wd1713_695_stis_g750l.fits
+WFC3_G102 = wd1713_695_wfc3_g102.fits
+WFC3_G141 = wd1713_695_wfc3_g141.fits
 Teff = 16000.0
 Teff_unc = 400.0
 logg = 8.03

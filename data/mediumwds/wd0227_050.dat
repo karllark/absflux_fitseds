@@ -1,6 +1,10 @@
 # data file for observations of WD0227_050
-STIS = wd0227_050_stis_UV.fits
-STIS_Opt = wd0227_050_stis_Opt.fits
+STIS_G140L = wd0227_050_stis_g140l.fits
+STIS_G230L = wd0227_050_stis_g230l.fits
+STIS_G430L = wd0227_050_stis_g430l.fits
+STIS_G750L = wd0227_050_stis_g750l.fits
+WFC3_G102 = wd0227_050_wfc3_g102.fits
+WFC3_G141 = wd0227_050_wfc3_g141.fits
 Teff = 19000.0
 Teff_unc = 400.0
 logg = 7.90

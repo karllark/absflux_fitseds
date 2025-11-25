@@ -21,6 +21,16 @@ if __name__ == "__main__":
         else:
             regfiles.append(cfile)
 
+    data_names = [
+        "BAND",
+        "STIS_G140L",
+        "STIS_G230L",
+        "STIS_G430L",
+        "STIS_G750L",
+        "WFC3_G102",
+        "WFC3_G141",
+    ]
+
     for mtype in ["", "cont"]:
 
         if mtype == "cont":
@@ -41,7 +51,7 @@ if __name__ == "__main__":
             tlusty_models,
             path=f"{modpath}/",
             band_names=None,
-            spectra_names=["BAND", "STIS", "STIS_Opt"],
+            spectra_names=data_names,
         )
         pickle.dump(modinfo, open(f"{modstr}{mtype}modinfo.p", "wb"))
         print("finished reading model files")

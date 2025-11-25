@@ -29,7 +29,7 @@ STIS and WFC3 grism spectra from Ralph Bohlin reductions.
 
 WFC3 photometry from XXX paper.
 
-Created measure_extinction format STIS data using `utils/process_faintwds.py`
+Created measure_extinction format STIS/WFC3 spectra using `utils/process_hstdata.py`
 
 Old style merged STIS spectra 
 `~/Python/measure_extinction/measure_extinction/utils/merge_stis_spec.py wdfs1055_36 --ralph --inpath ./stis/ --outpath ./ --waveregion UV``
