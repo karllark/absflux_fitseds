@@ -1,3 +1,5 @@
+import os
+
 from measure_extinction.utils.helpers import read_bohlin
 from measure_extinction.merge_obsspec import (
     obsspecinfo,
@@ -8,23 +10,25 @@ from measure_extinction.merge_obsspec import (
 
 if __name__ == "__main__":
 
-    names = ["wdfs1302_10"]
+    names = ["wdfs0122_30", "wdfs1302_10"]
 
     path = "data/faintwds/"
     for cname in names:
 
         for cspec in ["wfc3_g102", "wfc3_g141"]:
             grating = cspec.split("_")[1]
-            tab = read_bohlin(f"{path}wfc3/{cname}.{grating}")
+            cfile = f"{path}wfc3/{cname}.{grating}"
+            if os.path.exists(cfile):
+                tab = read_bohlin(cfile)
 
-            cres = obsspecinfo[cspec][0]
+                cres = obsspecinfo[cspec][0]
 
-            rb_info = merge_gen_obsspec(
-                [tab], obsspecinfo[cspec][1], output_resolution=cres
-            )
+                rb_info = merge_gen_obsspec(
+                    [tab], obsspecinfo[cspec][1], output_resolution=cres
+                )
 
-            ofile = f"{path}{cname}_{cspec}.fits"
-            rb_info.write(ofile, overwrite=True)
+                ofile = f"{path}{cname}_{cspec}.fits"
+                rb_info.write(ofile, overwrite=True)
 
         for cspec in ["stis_g140l", "stis_g230l"]:
             grating = cspec.split("_")[1]
