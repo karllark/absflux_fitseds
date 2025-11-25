@@ -24,7 +24,8 @@ if __name__ == "__main__":
                  "hz4", "wd1202_232", "wd1544_377", "wd2341_322"]   # hz4 = WD0352_096
         path = "data/mediumwds/"
     elif args.miscwds:
-        names = ["grw_70d5824", "sdss132811", "wd1057_719", "wd1657_343",
+        names = ["g191b2b", "gd153", "gd71",
+                 "grw_70d5824", "sdss132811", "wd1057_719", "wd1657_343",
                  "wdj040027", "wdj041345", "wdj174911", "wdj175318", "wdj181144"]
         path = "data/miscwds/"
     else:
@@ -64,7 +65,7 @@ if __name__ == "__main__":
                 ofile = f"{path}{cname}_{cspec}.fits"
                 rb_info.write(ofile, overwrite=True)
 
-        for cspec in ["stis_g140l", "stis_g230l"]:
+        for cspec in ["stis_g140l", "stis_g230l", "stis_g230lb"]:
             grating = cspec.split("_")[1]
             cfile = f"{path}stis/{cname}.{grating}"
             if os.path.exists(cfile):
