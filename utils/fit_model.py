@@ -91,7 +91,8 @@ def main():
         band_names = reddened_star.data["BAND"].get_band_names()
     else:
         band_names = []
-    data_names = list(reddened_star.data.keys())
+    #data_names = list(reddened_star.data.keys())
+    data_names = ['BAND', 'STIS_G140L', 'STIS_G230L', 'STIS_G430L', 'STIS_G750L', 'WFC3_G102', 'WFC3_G141']
     band_names = None
 
     # model data

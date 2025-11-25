@@ -34,5 +34,14 @@ Created measure_extinction format STIS data using `utils/process_faintwds.py`
 Old style merged STIS spectra 
 `~/Python/measure_extinction/measure_extinction/utils/merge_stis_spec.py wdfs1055_36 --ralph --inpath ./stis/ --outpath ./ --waveregion UV``
 
+Fits
+----
+
+Fitting is done with `utils/fit_model.py` code.  Example command is `utils/fit_model.py wdfs1514_00 --Av_init=0.1`.  Add `--picmodel`
+to use a previous pickled model.
+
+Bulk fitting is done using the `fitstars` (wdfs stars) and `fits_stars_med` (wd stars) bash scripts.  These start multiple 
+simultaneous fits with log files in the `logs` subdir.
+
 Figures
 -------
