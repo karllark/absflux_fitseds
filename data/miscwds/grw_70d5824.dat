@@ -1,0 +1,12 @@
+# data file for observations of grw_70d5824
+STIS_G140L = grw_70d5824_stis_g140l.fits
+STIS_G230L = grw_70d5824_stis_g230l.fits
+STIS_G430L = grw_70d5824_stis_g430l.fits
+STIS_G750L = grw_70d5824_stis_g750l.fits
+WFC3_G102 = grw_70d5824_wfc3_g102.fits
+WFC3_G141 = grw_70d5824_wfc3_g141.fits
+Teff = 13000.0
+Teff_unc = 400.0
+logg = 8.0
+logg_unc = 0.040
+Z = 1.0

@@ -1,0 +1,10 @@
+# data file for observations of SDSS132811
+STIS_G140L = sdss132811_stis_g140l.fits
+STIS_G230L = sdss132811_stis_g230l.fits
+STIS_G430L = sdss132811_stis_g430l.fits
+STIS_G750L = sdss132811_stis_g750l.fits
+Teff = 13000.0
+Teff_unc = 400.0
+logg = 8.0
+logg_unc = 0.040
+Z = 1.0
