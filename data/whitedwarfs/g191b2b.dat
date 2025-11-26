@@ -1,7 +1,7 @@
 # data file for observations of g191b2b
-STIS_G230L = g191b2b_stis_g230lb.fits
-STIS_G430L = g191b2b_stis_g430l.fits
-STIS_G750L = g191b2b_stis_g750l.fits
+STIS_G230L = g191_stis_g230lb.fits
+STIS_G430L = g191_stis_g430l.fits
+STIS_G750L = g191_stis_g750l.fits
 WFC3_G102 = g191b2b_wfc3_g102.fits
 WFC3_G141 = g191b2b_wfc3_g141.fits
 Teff = 13000.0

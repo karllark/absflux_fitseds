@@ -17,24 +17,20 @@ if __name__ == "__main__":
 
 
     # fmt: off
-    if args.medwds:
-        names = ["wd0148_467", "wd0227_050", "wd0809_177", "wd1105_048", "wd1105_340", "wd1327_083",
-                 "wd1713_695", "wd1911_536", "wd1919_145", "wd2039_682", "wd2117_539", "wd2126_734",
-                 "wd2149_021",
-                 "hz4", "wd1202_232", "wd1544_377", "wd2341_322"]   # hz4 = WD0352_096
-        path = "data/mediumwds/"
-    elif args.miscwds:
-        names = ["g191b2b", "gd153", "gd71",
+    mednames = ["wd0148_467", "wd0227_050", "wd0809_177", "wd1105_048", "wd1105_340", "wd1327_083",
+                "wd1713_695", "wd1911_536", "wd1919_145", "wd2039_682", "wd2117_539", "wd2126_734",
+                "wd2149_021",
+                "hz4", "wd1202_232", "wd1544_377", "wd2341_322"]   # hz4 = WD0352_096
+    miscnames = ["g191b2b", "g191", "gd153", "gd71",   # g191 = g191b2b (diff names for diff obs)
                  "grw_70d5824", "sdss132811", "wd1057_719", "wd1657_343",
                  "wdj040027", "wdj041345", "wdj174911", "wdj175318", "wdj181144"]
-        path = "data/miscwds/"
-    else:
-        names = ["wdfs0122_30", "wdfs0248_33", "wdfs0458_56", "wdfs0639_57", "wdfs0956_38", "wdfs1055_36",
-                "wdfs1110_17", "wdfs1206_27", "wdfs1214_45", "wdfs1302_10", "wdfs1434_28", "wdfs1514_00",
-                "wdfs1535_77", "wdfs1557_55", "wdfs1814_78", "wdfs1837_70", "wdfs1930_52", "wdfs2317_29",
-                "wdfs2351_37"]
-        path = "data/faintwds/"
+    faintnames = ["wdfs0122_30", "wdfs0248_33", "wdfs0458_56", "wdfs0639_57", "wdfs0956_38", "wdfs1055_36",
+                  "wdfs1110_17", "wdfs1206_27", "wdfs1214_45", "wdfs1302_10", "wdfs1434_28", "wdfs1514_00",
+                  "wdfs1535_77", "wdfs1557_55", "wdfs1814_78", "wdfs1837_70", "wdfs1930_52", "wdfs2317_29",
+                  "wdfs2351_37"]
     # fmt: on
+    names = miscnames + mednames + faintnames
+    path = "data/whitedwarfs/"
 
     for cname in names:
         print(f"working on {cname}")
