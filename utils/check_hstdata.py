@@ -1,5 +1,6 @@
 import os
 import filecmp
+import shutil
 
 if __name__ == "__main__":
 
@@ -20,6 +21,7 @@ if __name__ == "__main__":
                 if filecmp.cmp(file1, file2, shallow=False):
                     print(f"{cfile} is up-to-date")
                 else:
-                    print(f"{cfile} is out-of-date")
+                    shutil.copyfile(file2, file1)
+                    print(f"{cfile} updated from origin dir")
             else:
                 print(f"{cfile} not present in origin dir")
