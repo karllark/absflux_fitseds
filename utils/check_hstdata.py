@@ -13,8 +13,7 @@ if __name__ == "__main__":
         files = [
             entry for entry in all_entries if os.path.isfile(os.path.join(path, entry))
         ]
-
-        for cfile in files:
+        for cfile in sorted(files):
             file1 = f"{path}{cfile}"
             file2 = f"{rpath}{cfile}"
             if os.path.exists(file2):
