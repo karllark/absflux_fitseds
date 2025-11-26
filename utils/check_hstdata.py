@@ -17,7 +17,10 @@ if __name__ == "__main__":
         for cfile in files:
             file1 = f"{path}{cfile}"
             file2 = f"{rpath}{cfile}"
-            if filecmp.cmp(file1, file2, shallow=False):
-                print(f"{cfile} is up-to-date")
+            if os.path.exists(file2):
+                if filecmp.cmp(file1, file2, shallow=False):
+                    print(f"{cfile} is up-to-date")
+                else:
+                    print(f"{cfile} is out-of-date")
             else:
-                print(f"{cfile} is out-of-date")
+                print(f"{cfile} not present in origin dir")
