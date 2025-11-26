@@ -1,0 +1,23 @@
+import os
+import filecmp
+
+if __name__ == "__main__":
+
+    obspath = f"data/whitedwarfs/"
+    obstypes = ["stis"]
+    ralphpath = ["/user/bohlin/stiscal/dat/"]
+    for otype, rpath in zip(obstypes, ralphpath):
+
+        path = f"{obspath}{otype}/"
+        all_entries = os.listdir(path)
+        files = [
+            entry for entry in all_entries if os.path.isfile(os.path.join(path, entry))
+        ]
+
+        for cfile in files:
+            file1 = f"{path}{cfile}"
+            file2 = f"{rpath}{cfile}"
+            if filecmp.cmp(file1, file2, shallow=False):
+                print(f"{cfile} is up-to-date")
+            else:
+                print(f"{cfile} is out-of-date")
