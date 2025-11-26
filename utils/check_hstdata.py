@@ -5,9 +5,11 @@ import shutil
 if __name__ == "__main__":
 
     obspath = f"data/whitedwarfs/"
-    obstypes = ["stis"]
-    ralphpath = ["/user/bohlin/stiscal/dat/"]
+    obstypes = ["stis", "wfc3"]
+    ralphpath = ["/user/bohlin/stiscal/dat/", "/user/bohlin/wfc3/spec/"]
     for otype, rpath in zip(obstypes, ralphpath):
+
+        print(f"checking {otype} files")
 
         path = f"{obspath}{otype}/"
         all_entries = os.listdir(path)
