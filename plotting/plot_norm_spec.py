@@ -29,6 +29,14 @@ def main():
     parser.add_argument("--pdf", help="save figure as a pdf file", action="store_true")
     args = parser.parse_args()
 
+    grating_info = {"STIS_G140L": "indigo",
+                    "STIS_G230L": "violet",
+                    "STIS_G430L": "blue",
+                    "STIS_G750L": "green",
+                    "WFC3_G102": "orange",
+                    "WFC3_G141": "orangered",
+                    "MODEL_FULL_LOWRES": "black"}
+
     # plotting setup for easier to read plots
     fontsize = 12
     font = {"size": fontsize}
@@ -50,7 +58,7 @@ def main():
     # get the modeling info
     modinfo = pickle.load(open(args.picmodname, "rb"))
     modinfo_cont = pickle.load(
-        open(args.picmodname.replace("_modinfo", "cont_modinfo"), "rb")
+        open(args.picmodname.replace("modinfo", "contmodinfo"), "rb")
     )
 
     # setup the ME model
@@ -139,25 +147,30 @@ def main():
 
         if cspec == "BAND":
             cwaves = reddened_star.data[cspec].waves
-            ptype = "o"
-            rcolor = "g"
+            rmarker = "o"
+            rcolor = "cyan"
+            mline = "none"
             calpha = 0.75
             linewidth = 10.0
             fcolor = "none"
             markersize = 10.0
+            mmarker = "s"
+            modline = "none"
         else:
             cwaves = modinfo.waves[cspec]
-            ptype = "-"
-            rcolor = "k"
+            mline = "-"
+            rmarker = "none"
+            rcolor = grating_info[cspec]
             calpha = 0.5
             linewidth = 2.0
             fcolor = None
             markersize = None
+            mmarker = "none"
+            modline = ":"
 
         nvals = np.full(len(cwaves), 1.0)
         # plot the residuals
         if cspec != "MODEL_FULL_LOWRES":
-            mcolor = "r"
             gvals = hi_ext_modsed[cspec] > 0.0
             modspec = hi_ext_modsed[cspec][gvals] * memod.norm.value
             diff = (
@@ -177,7 +190,9 @@ def main():
                 cwaves[gvals],
                 diff,
                 yerr=uncs,
-                fmt=rcolor + ptype,
+                color=rcolor,
+                marker=rmarker,
+                linestyle=mline,
                 alpha=0.2,
                 markersize=markersize,
                 mfc=fcolor,
@@ -186,7 +201,9 @@ def main():
                 cwaves[gvals] * nvals,
                 diff * nvals,
                 yerr=uncs,
-                fmt=rcolor + ptype,
+                color=rcolor,
+                marker=rmarker,
+                linestyle=mline,
                 alpha=calpha,
                 markersize=markersize,
                 mfc=fcolor,
@@ -205,7 +222,7 @@ def main():
             nvals = np.full(len(cwaves), 1.0)
             nvals[memod_cont.weights[cspec] == 0.0] = np.nan
         else:
-            mcolor = "c"
+            mline = ":"
 
         hi_ext_modsed[cspec] /= hi_ext_modsed_cont[cspec]
 
@@ -213,7 +230,9 @@ def main():
             cax.plot(
                 cwaves,
                 hi_ext_modsed[cspec] * nvals,
-                mcolor + ptype,
+                color=rcolor,
+                marker=mmarker,
+                linestyle=modline,
                 linewidth=linewidth,
                 markersize=markersize,
                 mfc=fcolor,
@@ -222,7 +241,9 @@ def main():
             cax.plot(
                 cwaves,
                 hi_ext_modsed[cspec],
-                mcolor + ptype,
+                color=rcolor,
+                marker=mmarker,
+                linestyle=modline,
                 alpha=0.2,
                 linewidth=linewidth,
                 markersize=markersize,
@@ -235,7 +256,9 @@ def main():
                     reddened_star.data[cspec].waves[gvals],
                     reddened_star.data[cspec].fluxes[gvals],
                     #yerr=reddened_star.data[cspec].uncs[gvals],
-                    fmt=rcolor + ptype,
+                    color=rcolor,
+                    marker=rmarker,
+                    linestyle=mline,
                     alpha=calpha,
                     mfc=fcolor,
                     markersize=markersize,
@@ -269,7 +292,7 @@ def main():
 
     axes[0].set_title((reddened_star.file).replace(".dat", ""), fontsize=fontsize)
 
-    axes[1].legend(fontsize=0.7*fontsize, ncol=2)
+    axes[0].legend(fontsize=0.7*fontsize, ncol=2)
 
     save_str = "_mefit_mcmc_norm"
 
