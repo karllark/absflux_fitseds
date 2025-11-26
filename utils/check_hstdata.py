@@ -18,7 +18,10 @@ if __name__ == "__main__":
         ]
         for cfile in sorted(files):
             file1 = f"{path}{cfile}"
-            file2 = f"{rpath}{cfile}"
+            tpath = rpath
+            if (otype == "stis") & ("wdfs" in cfile):
+                tpath = tpath.replace("dat", "narayan")
+            file2 = f"{tpath}{cfile}"
             if os.path.exists(file2):
                 if not filecmp.cmp(file1, file2, shallow=False):
                     shutil.copyfile(file2, file1)
