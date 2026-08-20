@@ -46,3 +46,6 @@ simultaneous fits with log files in the `logs` subdir.
 
 Figures
 -------
+
+fit normalized to the model continuum
+`meplot_norm_model wdfs0122_30 --obspath data/whitedwarfs --picmodname wd_hubeny_modinfo.p`
