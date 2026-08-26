@@ -1,5 +1,5 @@
 import os
-import argparse
+# import argparse
 
 from measure_extinction.utils.helpers import read_bohlin
 from measure_extinction.merge_obsspec import (
@@ -10,10 +10,10 @@ from measure_extinction.merge_obsspec import (
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--medwds", help="process WD stars (mediumwds)", action="store_true")
-    parser.add_argument("--miscwds", help="process misc WD stars (miscwds)", action="store_true")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("--medwds", help="process WD stars (mediumwds)", action="store_true")
+    # parser.add_argument("--miscwds", help="process misc WD stars (miscwds)", action="store_true")
+    # args = parser.parse_args()
 
 
     # fmt: off
