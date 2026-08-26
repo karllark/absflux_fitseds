@@ -4,3 +4,9 @@
 *.fits
 *.p
 *.gz
+
+data/ralph*
+data/faintwds
+data/mediumwds
+data/miscwds
+exts*

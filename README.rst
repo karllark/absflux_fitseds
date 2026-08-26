@@ -31,9 +31,6 @@ WFC3 photometry from XXX paper.
 
 Created measure_extinction format STIS/WFC3 spectra using `utils/process_hstdata.py`
 
-Old style merged STIS spectra 
-`~/Python/measure_extinction/measure_extinction/utils/merge_stis_spec.py wdfs1055_36 --ralph --inpath ./stis/ --outpath ./ --waveregion UV``
-
 Fits
 ----
 
@@ -49,3 +46,8 @@ Figures
 
 fit normalized to the model continuum
 `meplot_norm_model wdfs0122_30 --obspath data/whitedwarfs --picmodname wd_hubeny_modinfo.p`
+
+Notebooks
+---------
+
+Not used anymore.  Out of date and likely don't work.

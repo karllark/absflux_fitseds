@@ -1,5 +1,5 @@
 import os
-import argparse
+# import argparse
 
 from measure_extinction.utils.helpers import read_bohlin
 from measure_extinction.merge_obsspec import (
@@ -10,10 +10,10 @@ from measure_extinction.merge_obsspec import (
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--medwds", help="process WD stars (mediumwds)", action="store_true")
-    parser.add_argument("--miscwds", help="process misc WD stars (miscwds)", action="store_true")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("--medwds", help="process WD stars (mediumwds)", action="store_true")
+    # parser.add_argument("--miscwds", help="process misc WD stars (miscwds)", action="store_true")
+    # args = parser.parse_args()
 
 
     # fmt: off
@@ -21,9 +21,9 @@ if __name__ == "__main__":
                 "wd1713_695", "wd1911_536", "wd1919_145", "wd2039_682", "wd2117_539", "wd2126_734",
                 "wd2149_021",
                 "hz4", "wd1202_232", "wd1544_377", "wd2341_322"]   # hz4 = WD0352_096
-    miscnames = ["g191b2b", "g191", "gd153", "gd71",   # g191 = g191b2b (diff names for diff obs)
-                 "grw_70d5824", "sdss132811", "wd1057_719", "wd1657_343",
-                 "wdj040027", "wdj041345", "wdj174911", "wdj175318", "wdj181144"]
+    miscnames = ["g191b2b", "g191b2b", "g191", "gd153", "gd71",   # g191 = g191b2b (diff names for diff obs)
+                 "grw_70d5824", "sdss132811", "sdssj04105", "wd1057_719", "wd1657_343",
+                 "wdj040027", "wdj041345", "wdj042211", "wdj174911", "wdj175318", "wdj181144"]
     faintnames = ["wdfs0122_30", "wdfs0248_33", "wdfs0458_56", "wdfs0639_57", "wdfs0956_38", "wdfs1055_36",
                   "wdfs1110_17", "wdfs1206_27", "wdfs1214_45", "wdfs1302_10", "wdfs1434_28", "wdfs1514_00",
                   "wdfs1535_77", "wdfs1557_55", "wdfs1814_78", "wdfs1837_70", "wdfs1930_52", "wdfs2317_29",
