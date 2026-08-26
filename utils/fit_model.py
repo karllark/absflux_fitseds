@@ -19,7 +19,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 def fit_model_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("starname", help="Name of star")
-    parser.add_argument("--path", help="Path to star data", default="./data/faintwds/")
+    parser.add_argument("--path", help="Path to star data", default="./data/whitedwarfs/")
     parser.add_argument(
         "--modtype",
         help="Pick the type of model grid",
