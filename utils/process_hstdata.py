@@ -1,5 +1,4 @@
 import os
-# import argparse
 
 from measure_extinction.utils.helpers import read_bohlin
 from measure_extinction.merge_obsspec import (
@@ -10,11 +9,6 @@ from measure_extinction.merge_obsspec import (
 
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("--medwds", help="process WD stars (mediumwds)", action="store_true")
-    # parser.add_argument("--miscwds", help="process misc WD stars (miscwds)", action="store_true")
-    # args = parser.parse_args()
-
 
     # fmt: off
     mednames = ["wd0148_467", "wd0227_050", "wd0809_177", "wd1105_048", "wd1105_340", "wd1327_083",
