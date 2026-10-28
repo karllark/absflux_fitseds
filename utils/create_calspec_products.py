@@ -37,6 +37,7 @@ if __name__ == "__main__":
 
     allspec = []
     alltab = []
+    waverange = []
     for cspec in obs.data.keys():
         if "WFC3" not in cspec:
             tab = QTable()
@@ -55,6 +56,8 @@ if __name__ == "__main__":
                 lam4[gvals] * obs.data[cspec].fluxes[gvals],
                 label=cspec,
             )
+            waverange.append([np.min(obs.data[cspec].waves[gvals]),
+                              np.max(obs.data[cspec].waves[gvals])])
 
     mspec = merge_gen_obsspec(alltab, [0.1150, 3.1] * u.micron, output_resolution=1000)
     mspec["FLUX"][mspec["NPTS"] == 0] = np.nan
@@ -79,7 +82,10 @@ if __name__ == "__main__":
         mspec["WAVELENGTH"][-1],
         "Maximum wavelength of merged spectrum in microns",
     )
-    phdu.header["COMMENT"] = f"Individual spectra: {', '.join(allspec)}"
+    phdu.header["COMMENT"] = "Spectra included with wavelength ranges"
+    for cspec, crange in zip(allspec, waverange):
+        phdu.header["COMMENT"] = f"{cspec}: {crange[0]:.4f} - {crange[1]:.4f}"
+
     phdu.header["COMMENT"] = (
         "Individual spectra are included in FITS extensions for reference"
     )
